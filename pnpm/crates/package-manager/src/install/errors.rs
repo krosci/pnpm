@@ -428,6 +428,18 @@ pub enum InstallError {
     )]
     #[diagnostic(code(ERR_PNPM_CONFIG_CONFLICT_VIRTUAL_STORE_ONLY_WITH_NO_MODULES_DIR))]
     ConfigConflictVirtualStoreOnlyWithNoModulesDir,
+
+    /// `symlink: false` was requested with the isolated linker and
+    /// without `PnP`. The isolated layout links the virtual store and
+    /// importer dependencies with symlinks, so disabling them leaves
+    /// `node_modules` without direct dependencies. Use
+    /// `nodeLinker: hoisted` for a symlink-free `node_modules` or
+    /// enable `PnP` together with `symlink: false`.
+    #[display(
+        "Cannot use symlink=false with the isolated linker without PnP. The isolated layout links the virtual store and importer dependencies with symlinks, so disabling them leaves node_modules without direct dependencies. Use nodeLinker=hoisted for a symlink-free node_modules or enable PnP together with symlink=false"
+    )]
+    #[diagnostic(code(ERR_PNPM_CONFIG_CONFLICT_SYMLINK_WITH_ISOLATED_LINKER))]
+    ConfigConflictSymlinkWithIsolatedLinker,
 }
 
 impl From<pnpm_hooks::HookError> for InstallError {
